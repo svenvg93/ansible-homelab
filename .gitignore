@@ -1,2 +1,3 @@
 # Vaulted secrets (if not committing)
 group_vars/all.yml
+.ansible
