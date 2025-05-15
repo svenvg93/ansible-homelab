@@ -1,0 +1,72 @@
+- name: Set node_exporter architecture
+  ansible.builtin.set_fact:
+    node_exporter_arch: >-
+      {{ 'amd64' if ansible_architecture == 'x86_64' else
+         'arm64' if ansible_architecture == 'aarch64' else 'unsupported' }}
+
+- name: Fail if unsupported architecture
+  ansible.builtin.fail:
+    msg: "Unsupported architecture: {{ ansible_architecture }}"
+  when: node_exporter_arch == 'unsupported'
+
+- name: Check if node_exporter is already installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/node_exporter
+  register: node_exporter_binary
+
+- name: Check node_exporter version (if installed)
+  ansible.builtin.command: /usr/local/bin/node_exporter --version
+  register: node_exporter_version_output
+  when: node_exporter_binary.stat.exists | bool
+  changed_when: false
+  failed_when: false
+
+- name: Skip install if correct version is already installed
+  ansible.builtin.debug:
+    msg: "Node Exporter {{ node_exporter_version }} already installed."
+  when: node_exporter_binary.stat.exists | bool and
+        node_exporter_version in node_exporter_version_output.stdout
+
+- name: Download node_exporter
+  ansible.builtin.get_url:
+    url: >-
+      https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/
+      node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz
+    dest: /tmp/node_exporter.tar.gz
+    mode: '0644'
+  when: not node_exporter_binary.stat.exists or
+        node_exporter_version not in node_exporter_version_output.stdout
+  notify: Restart node_exporter
+
+- name: Extract node_exporter
+  ansible.builtin.unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /usr/local/bin/
+    remote_src: true
+    extra_opts: [--strip-components=1]
+  when: not node_exporter_binary.stat.exists or
+        node_exporter_version not in node_exporter_version_output.stdout
+  notify: Restart node_exporter
+
+- name: Create systemd service
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/node_exporter.service
+    mode: '0644'
+    content: |
+      [Unit]
+      Description=Node Exporter
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/local/bin/node_exporter
+      Restart=always
+
+      [Install]
+      WantedBy=default.target
+  notify: Reload systemd
+
+- name: Ensure node_exporter is running
+  ansible.builtin.systemd:
+    name: node_exporter
+    enabled: true
+    state: started

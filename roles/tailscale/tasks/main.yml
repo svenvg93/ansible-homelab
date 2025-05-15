@@ -1,0 +1,34 @@
+- name: Check if Tailscale is installed
+  ansible.builtin.stat:
+    path: /usr/sbin/tailscale
+  register: tailscale_installed
+
+- name: Download Tailscale install script
+  ansible.builtin.get_url:
+    url: https://tailscale.com/install.sh
+    dest: /tmp/tailscale-install.sh
+    mode: '0755'
+  when: not tailscale_installed.stat.exists
+
+- name: Run Tailscale install script
+  ansible.builtin.command: /tmp/tailscale-install.sh
+  when: not tailscale_installed.stat.exists
+  changed_when: true
+  notify: Restart tailscaled
+
+- name: Check Tailscale status
+  ansible.builtin.command: tailscale status
+  register: tailscale_status
+  changed_when: false
+  failed_when: false
+  when: tailscale_installed.stat.exists
+
+- name: Authenticate Tailscale if not connected and key is provided
+  ansible.builtin.command: >
+    tailscale up
+    --authkey {{ tailscale_auth_key }}
+    --hostname {{ inventory_hostname }}
+  when:
+    - tailscale_auth_key != ""
+    - "'Logged out.' in tailscale_status.stdout"
+  changed_when: true

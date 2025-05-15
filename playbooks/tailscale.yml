@@ -1,0 +1,5 @@
+- name: Install and authenticate Tailscale
+  hosts: all
+  become: true
+  roles:
+    - tailscale

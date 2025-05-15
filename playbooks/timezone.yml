@@ -1,0 +1,12 @@
+- name: Set timezone and locale
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Set timezone
+      community.general.timezone:
+        name: Europe/Amsterdam
+
+    - name: Ensure locale is set
+      ansible.builtin.command: localectl set-locale LANG=en_US.UTF-8
+      changed_when: true
