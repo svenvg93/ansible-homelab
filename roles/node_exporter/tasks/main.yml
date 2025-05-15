@@ -14,28 +14,16 @@
     path: /usr/local/bin/node_exporter
   register: node_exporter_binary
 
-- name: Check node_exporter version (if installed)
-  ansible.builtin.command: /usr/local/bin/node_exporter --version
-  register: node_exporter_version_output
+- name: End host early if node_exporter is already installed
+  ansible.builtin.meta: end_host
   when: node_exporter_binary.stat.exists | bool
-  changed_when: false
-  failed_when: false
-
-- name: Skip install if correct version is already installed
-  ansible.builtin.debug:
-    msg: "Node Exporter {{ node_exporter_version }} already installed."
-  when: node_exporter_binary.stat.exists | bool and
-        node_exporter_version in node_exporter_version_output.stdout
 
 - name: Download node_exporter
   ansible.builtin.get_url:
-    url: >-
-      https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/
-      node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz
+    url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz"
     dest: /tmp/node_exporter.tar.gz
     mode: '0644'
-  when: not node_exporter_binary.stat.exists or
-        node_exporter_version not in node_exporter_version_output.stdout
+  when: not node_exporter_binary.stat.exists
   notify: Restart node_exporter
 
 - name: Extract node_exporter
@@ -44,8 +32,7 @@
     dest: /usr/local/bin/
     remote_src: true
     extra_opts: [--strip-components=1]
-  when: not node_exporter_binary.stat.exists or
-        node_exporter_version not in node_exporter_version_output.stdout
+  when: not node_exporter_binary.stat.exists
   notify: Restart node_exporter
 
 - name: Create systemd service
