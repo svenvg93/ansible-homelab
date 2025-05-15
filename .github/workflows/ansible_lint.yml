@@ -28,5 +28,7 @@ jobs:
         run: |
           pip install ansible ansible-lint
 
-      - name: Run ansible-lint
-        run: ansible-lint .
+      - name: Run ansible-lint on all roles and playbooks
+        run: |
+          find playbooks -name "*.yml" -exec ansible-lint {} +
+          find roles -name "*.yml" -exec ansible-lint {} +
