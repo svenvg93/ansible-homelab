@@ -1,8 +1,15 @@
 # .github/workflows/ansible-lint.yml
-name: ansible-lint
+name: Ansible Lint
+
 on:
+  push:
+    branches: ["master"]
+
   pull_request:
     branches: ["master"]
+
+  workflow_dispatch:
+
 jobs:
   build:
     name: Ansible Lint # Naming the build is important to use it as a status check
