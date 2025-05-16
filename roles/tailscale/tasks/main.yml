@@ -31,19 +31,9 @@
 
 - name: Authenticate with Tailscale if logged out and auth key is provided
   ansible.builtin.command: >
-    tailscale up --ssh --authkey={{ tailscale_auth_key }} --hostname={{ inventory_hostname }}
+    tailscale up --ssh --authkey={{ tailscale_auth_key }}
   when:
     - tailscale_auth_key is defined
     - tailscale_auth_key | length > 0
     - "'Logged out.' in tailscale_status.stdout"
   changed_when: true
-
-- name: Ensure Tailscale SSH is up (no auth key used or already logged in)
-  ansible.builtin.command: >
-    tailscale up --ssh --hostname={{ inventory_hostname }}
-  when:
-    - tailscale_auth_key is not defined or tailscale_auth_key | length == 0
-    - "'Logged out.' not in tailscale_status.stdout"
-  register: tailscale_up
-  changed_when: "'Success.' in tailscale_up.stdout"
-  failed_when: tailscale_up.rc != 0 and "'already up'" not in tailscale_up.stdout
