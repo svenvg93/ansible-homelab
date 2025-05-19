@@ -1,3 +1,14 @@
+- name: Check if tailscaled service is running
+  ansible.builtin.systemd:
+    name: tailscaled
+  register: tailscaled_service
+  changed_when: false
+  failed_when: false
+
+- name: Skip Tailscale Setup
+  ansible.builtin.meta: end_host
+  when: tailscaled_service.status.ActiveState == "active"
+
 - name: Check if Tailscale is installed
   ansible.builtin.stat:
     path: /usr/sbin/tailscale

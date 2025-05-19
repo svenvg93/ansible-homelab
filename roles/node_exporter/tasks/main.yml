@@ -1,3 +1,14 @@
+- name: Check if 'node_exporter' systemd service is running
+  ansible.builtin.systemd:
+    name: node_exporter
+  register: node_exporter_service
+  changed_when: false
+  failed_when: false
+
+- name: Skip Node Exporter Setup
+  ansible.builtin.meta: end_host
+  when: node_exporter_service.status.ActiveState == "active"
+
 - name: Set node_exporter architecture
   ansible.builtin.set_fact:
     node_exporter_arch: >-

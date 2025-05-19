@@ -1,3 +1,14 @@
+- name: Check if 'docker' systemd service is running
+  ansible.builtin.systemd:
+    name: docker
+  register: docker_service
+  changed_when: false
+  failed_when: false
+
+- name: Skip Docker Setup
+  ansible.builtin.meta: end_host
+  when: docker_service.status.ActiveState == "active"
+
 - name: Check if Docker is installed
   ansible.builtin.command: docker --version
   register: docker_installed
