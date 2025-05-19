@@ -1,0 +1,32 @@
+- name: Deploy cAdvisor with Docker Compose
+  hosts: homelab
+  become: true
+
+  tasks:
+    - name: Check if cAdvisor container is running
+      ansible.builtin.shell: docker ps --filter "name=cadvisor" --filter "status=running" --format '{{ "{{" }}.Names{{ "}}" }}'
+      register: cadvisor_status
+      changed_when: false
+      failed_when: false
+
+    - name: Skip if cAdvisor is already running
+      ansible.builtin.meta: end_host
+      when: cadvisor_status.stdout == "cadvisor"
+
+    - name: Create cAdvisor directory
+      ansible.builtin.file:
+        path: /opt/docker/cadvisor
+        state: directory
+        mode: '0755'
+
+    - name: Copy docker-compose.yml
+      ansible.builtin.copy:
+        src: files/docker/cadvisor/docker-compose.yml
+        dest: /opt/docker/cadvisor/docker-compose.yml
+        mode: '0644'
+
+    - name: Start cAdvisor container
+      ansible.builtin.command: docker compose up -d
+      args:
+        chdir: /opt/docker/cadvisor
+      changed_when: false

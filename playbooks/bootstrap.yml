@@ -1,0 +1,10 @@
+- name: Bootstrap Node
+  hosts: all
+  become: true
+  roles:
+    - bootstrap
+    - tailscale
+    - node_exporter
+    - speedtest
+    - docker
+    - maintenance

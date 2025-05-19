@@ -1,0 +1,8 @@
+- name: Configure timezone and locale
+  ansible.builtin.include_tasks: timezone.yml
+
+- name: Enable security updates
+  ansible.builtin.include_tasks: updates.yml
+
+- name: Create admin user
+  ansible.builtin.include_tasks: user.yml

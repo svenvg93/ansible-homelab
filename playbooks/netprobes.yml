@@ -1,8 +1,0 @@
-- name: Configure Raspberry Pi
-  hosts: raspberrypi
-  become: true
-  roles:
-    - tailscale
-    - node_exporter
-    - maintenance
-    - telegraf
