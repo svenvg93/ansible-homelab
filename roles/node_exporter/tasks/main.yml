@@ -27,13 +27,15 @@
 
 - name: End host early if node_exporter is already installed
   ansible.builtin.meta: end_host
-  when: node_exporter_binary.stat.exists | bool
+  when: (node_exporter_binary.stat.exists | bool)
+
+- name: Debug constructed URL
+  ansible.builtin.debug:
+    var: node_exporter_url
 
 - name: Download node_exporter
   ansible.builtin.get_url:
-    url: >
-      https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/
-      node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz
+    url: "{{ node_exporter_url }}"
     dest: /tmp/node_exporter.tar.gz
     mode: '0644'
   when: not node_exporter_binary.stat.exists
