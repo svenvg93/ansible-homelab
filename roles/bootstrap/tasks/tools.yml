@@ -1,0 +1,5 @@
+- name: Install tcpdump
+  ansible.builtin.apt:
+    name: tcpdump
+    state: present
+    update_cache: true
