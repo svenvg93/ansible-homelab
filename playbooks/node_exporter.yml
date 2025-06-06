@@ -1,5 +1,5 @@
-- name: Install Node Exporter
-  hosts: all
+- name: Deploy monitoring agent Node Exporter
+  hosts: monitoring_hosts
   become: true
   roles:
     - node_exporter

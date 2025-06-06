@@ -1,4 +1,4 @@
-- name: Install and authenticate Tailscale
+- name: Enroll hosts into Tailscale
   hosts: all
   become: true
   roles:
