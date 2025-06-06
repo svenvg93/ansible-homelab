@@ -1,0 +1,3 @@
+ansible>=2.10,<3
+ansible-lint>=5.0
+yamllint>=1.26
