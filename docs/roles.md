@@ -57,8 +57,6 @@ Below is a brief overview of each role:
   6. Enables & starts the Docker service.
 * **`handlers/main.yml`**
   * Restarts Docker if the repository or configuration changes.
-* **`templates/docker-compose.yml.j2`**\
-  A sample Docker Compose file. Customize it in `group_vars/docker_hosts.yml` or override per‐host.
 
 ***
 
@@ -71,8 +69,6 @@ Below is a brief overview of each role:
   2. Extracts the binary into `/usr/local/bin/`.
   3. Installs a systemd service file (from `files/node_exporter.service`).
   4. Enables & starts the `node_exporter` service.
-* **`files/node_exporter.service`**\
-  A systemd unit that points to `/usr/local/bin/node_exporter --web.listen-address=:{{ node_exporter_port }}`.
 * **`handlers/main.yml`**
   * Restarts or reloads the service if the binary or service file changes.
 
@@ -87,8 +83,6 @@ Below is a brief overview of each role:
   2. Installs `telegraf`.
   3. Deploys `telegraf.conf.j2` from `templates/`, rendering it with the variables declared in `group_vars/monitoring_hosts.yml`.
   4. Enables & starts the Telegraf service.
-* **`templates/telegraf.conf.j2`**\
-  Jinja2 template referencing inputs/outputs (e.g., InfluxDB, Prometheus, MQTT).
 * **`handlers/main.yml`**
   * Restarts Telegraf whenever the configuration changes.
 

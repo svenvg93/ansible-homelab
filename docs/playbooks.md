@@ -13,12 +13,11 @@ playbooks/
 ### `playbooks/docker.yml`
 
 ```yaml
----
 - name: Install and configure Docker on all docker_hosts
   hosts: docker_hosts
   become: true
   roles:
-    - role: roles/docker
+    - role: docker
 ```
 
 * Installs Docker Engine & Docker Compose.
@@ -28,29 +27,27 @@ playbooks/
 ### `playbooks/monitoring.yml`
 
 ```yaml
----
 - name: Deploy monitoring agents (Node Exporter & Telegraf)
   hosts: monitoring_hosts
   become: true
   roles:
-    - role: roles/node_exporter
+    - role: node_exporter
       when: install_node_exporter | default(true)
-    - role: roles/telegraf
+    - role: telegraf
       when: install_telegraf | default(true)
 ```
 
 * **Node Exporter**: downloads and runs Prometheus Node Exporter as a systemd service.
 * **Telegraf**: installs Telegraf, places `telegraf.conf`, and starts the agent.
 
-### `playbooks/vpn.yml`
+### `playbooks/tailscale.yml`
 
 ```yaml
----
 - name: Enroll hosts into Tailscale
   hosts: vpn_hosts
   become: true
   roles:
-    - role: roles/tailscale
+    - role: tailscale
 ```
 
 * Installs Tailscale package (using the official apt/repo).
@@ -60,7 +57,6 @@ playbooks/
 ### `playbooks/site.yml`
 
 ```yaml
----
 - import_playbook: docker.yml
 - import_playbook: monitoring.yml
 - import_playbook: vpn.yml
@@ -73,8 +69,8 @@ playbooks/
     ansible-playbook -i inventory/hosts.yml playbooks/site.yml
     ```
 
-> **Tip:** If you want to run a single playbook (e.g., just VPN), use:
+> **Tip:** If you want to run a single playbook (e.g., just Tailscale), use:
 >
 > ```bash
-> ansible-playbook -i inventory/hosts.yml playbooks/vpn.yml
+> ansible-playbook -i inventory/hosts.yml playbooks/taiscale.yml
 > ```

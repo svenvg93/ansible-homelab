@@ -38,19 +38,4 @@ all:
 
 #### Tips
 
-*   You can nest additional groups under `all > children`. For example:
-
-    ```yaml
-    all:
-      children:
-        web_servers:
-          hosts:
-            host4.ts.net:
-        db_servers:
-          hosts:
-            host5.ts.net:
-    ```
-
-    If you do this, adjust `group_vars/` and plays accordingly.
-* If you prefer an INI‐style inventory, rename `hosts.yml` to `hosts.ini` and adapt group names/format. All examples below assume YAML.
 * Use `ansible-inventory --list -i inventory/hosts.yml` to verify that your inventory parses correctly.
