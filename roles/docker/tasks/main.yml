@@ -61,3 +61,9 @@
     name: docker
     enabled: true
     state: started
+
+- name: Add remote_user to the docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true

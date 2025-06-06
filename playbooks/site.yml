@@ -1,3 +1,0 @@
-- import_playbook: docker.yml
-- import_playbook: monitoring.yml
-- import_playbook: tailscale.yml

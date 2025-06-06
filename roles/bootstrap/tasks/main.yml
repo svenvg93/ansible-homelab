@@ -4,8 +4,5 @@
 - name: Enable security updates
   ansible.builtin.include_tasks: updates.yml
 
-- name: Create admin user
-  ansible.builtin.include_tasks: user.yml
-
 - name: Install useful system tools
   ansible.builtin.include_tasks: tools.yml
