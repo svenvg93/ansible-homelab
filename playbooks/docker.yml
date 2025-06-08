@@ -1,5 +1,15 @@
-- name: Install and configure Docker
+- name: Manage Docker
   hosts: all
   become: true
   roles:
     - docker
+
+  tasks:
+    - name: Install and configure Docker
+      ansible.builtin.import_role:
+        name: docker
+
+    - name: Uninstall Docker
+      ansible.builtin.import_tasks: ../roles/docker/tasks/uninstall.yml
+      tags:
+        - uninstall

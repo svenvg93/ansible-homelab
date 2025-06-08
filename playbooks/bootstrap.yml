@@ -4,7 +4,6 @@
   roles:
     - bootstrap
     - tailscale
-    - node_exporter
-    - speedtest
+    - beszel
     - docker
     - maintenance
