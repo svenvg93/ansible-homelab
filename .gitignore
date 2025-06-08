@@ -1,3 +1,5 @@
 # Vaulted secrets (if not committing)
-group_vars/vault.yml
+invengroup_vars/**/vault.yml
+**/*.vault.yml
 .ansible
+inventory/group_vars/beszel_hosts/vault.yml

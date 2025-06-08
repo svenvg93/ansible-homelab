@@ -27,22 +27,22 @@
 
 - name: Prune Docker unused images, containers, and volumes
   community.docker.docker_prune:
-    images: yes
-    containers: yes
-    volumes: yes
-    networks: yes
-    all: yes
+    images: true
+    containers: true
+    volumes: true
+    networks: true
   when: ansible_facts.packages is defined and 'docker' in ansible_facts.packages
 
 - name: Vacuum old journal logs older than 7 days
   ansible.builtin.command: journalctl --vacuum-time=7d
   become: true
+  changed_when: false
 
 - name: Remove old log files in /var/log older than 30 days
   ansible.builtin.find:
     paths: /var/log
     age: 30d
-    recurse: yes
+    recurse: true
   register: old_logs
 
 - name: Delete old log files

@@ -1,12 +1,8 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
-- name: Debug beszel_agent_ssh_key
-  ansible.builtin.debug:
-    var: beszel_agent_ssh_key
-
 - name: Download the install-agent.sh script
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh
     dest: /tmp/install-agent.sh
     mode: '0755' # Set executable permissions
@@ -16,13 +12,22 @@
   ansible.builtin.command:
     cmd: /tmp/install-agent.sh -u
   when: ansible_facts.services['beszel-agent.service'] is defined
+  changed_when: false
 
 - name: Run the install-agent.sh script with auto-update
-  shell: yes | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  ansible.builtin.shell: |
+    set -o pipefail && yes | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  args:
+    executable: /bin/bash
   when: beszel_agent_autoupdate | bool
   ignore_errors: false
+  changed_when: false
 
 - name: Run the install-agent.sh script without auto-update
-  shell: yes N | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  ansible.builtin.shell: |
+    set -o pipefail && yes N | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  args:
+    executable: /bin/bash
   when: not beszel_agent_autoupdate | bool
   ignore_errors: false
+  changed_when: false

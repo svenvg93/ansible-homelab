@@ -26,7 +26,9 @@
 - name: Set node_exporter_url
   ansible.builtin.set_fact:
     node_exporter_url: >-
-      https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-{{ node_exporter_arch }}.tar.gz
+      https://github.com/prometheus/node_exporter/releases/download/
+      v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-
+      {{ node_exporter_arch }}.tar.gz
 
 - name: Download node_exporter
   ansible.builtin.get_url:

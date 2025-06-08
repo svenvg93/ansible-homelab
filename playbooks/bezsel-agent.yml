@@ -3,5 +3,13 @@
   become: true
   vars_files:
     - group_vars/beszel_hosts/vault.yml
-  roles:
-    - role: beszel
+
+  tasks:
+    - name: Deploy Node Exporter
+      ansible.builtin.import_role:
+        name: beszel
+
+    - name: Uninstall Beszel Agent
+      ansible.builtin.import_tasks: ../roles/beszel/tasks/uninstall.yml
+      tags:
+        - uninstall

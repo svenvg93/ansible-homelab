@@ -1,5 +1,13 @@
-- name: Deploy monitoring agent Node Exporter
-  hosts: monitoring_hosts
+- name: Manage Node Exporter
+  hosts: beszel_hosts
   become: true
-  roles:
-    - node_exporter
+
+  tasks:
+    - name: Deploy Node Exporter
+      ansible.builtin.import_role:
+        name: node_exporter
+
+    - name: Uninstall Node Exporter
+      ansible.builtin.import_tasks: ../roles/node_exporter/tasks/uninstall.yml
+      tags:
+        - uninstall

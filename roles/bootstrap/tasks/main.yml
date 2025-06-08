@@ -1,10 +1,10 @@
 ---
 - name: Ensure correct timezone is set
-  ansible.builtin.timezone:
+  community.general.timezone:
     name: "{{ bootstrap_timezone }}"
 
 - name: Generate locale
-  ansible.builtin.locale_gen:
+  community.general.locale_gen:
     name: "{{ bootstrap_locale }}"
     state: present
 
@@ -26,7 +26,7 @@
 - name: Upgrade all packages to latest
   ansible.builtin.apt:
     upgrade: dist
-    update_cache: yes
+    update_cache: true
 
 - name: Enable automatic security updates
   ansible.builtin.copy:
@@ -50,12 +50,12 @@
     path: /etc/ssh/sshd_config
     regexp: '^#?PermitRootLogin'
     line: 'PermitRootLogin no'
-    backrefs: yes
+    backrefs: true
 
 - name: Disable SSH password authentication
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: '^#?PasswordAuthentication'
     line: 'PasswordAuthentication no'
-    backrefs: yes
+    backrefs: true
   notify: Restart SSH
