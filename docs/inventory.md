@@ -18,8 +18,8 @@ all:
         host1.ts.net:
         host2.ts.net:
 
-    # Group for Prometheus exporters & Telegraf
-    monitoring_hosts:
+    # Group for Beszel Agent installation
+    beszel_hosts:
       hosts:
         host1.ts.net:
         host3.ts.net:
@@ -33,7 +33,7 @@ all:
 ```
 
 * **`docker_hosts`**: all machines where Docker Engine and docker-compose will be installed.
-* **`monitoring_hosts`**: hosts to install Node Exporter and/or Telegraf. May overlap with other groups.
+* `beszel_hosts`: hosts to install the Beszel agent for system monitoring.
 * **`vpn_hosts`**: machines to enroll in Tailscale.
 
 #### Tips
