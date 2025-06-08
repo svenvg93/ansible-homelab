@@ -26,9 +26,9 @@ ansible-playbook -i inventory/hosts.yml playbooks/ookla-speedtest.yml
 
 This will:
 
-* Install the Speedtest CLI on each host.
-* Schedule and execute periodic speed tests according to the role’s defaults.
-* Store results locally (or forward them, if you’ve configured outputs).
+- Install the Speedtest CLI on each host.
+- Schedule and execute periodic speed tests according to the role’s defaults.
+- Store results locally (or forward them, if you’ve configured outputs).
 
 ### Related files
 

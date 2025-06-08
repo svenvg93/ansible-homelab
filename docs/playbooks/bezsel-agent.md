@@ -1,22 +1,25 @@
 ---
+title: Beszel Agent Playbook
 description: Install or uninstall the Beszel agent on hosts in the `beszel_hosts` group.
 ---
 
-# Bezsel Agent
+# Beszel Agent Playbook
 
-### Roles
+## Roles
 
 \- `bezsel`: handles download, installation (with optional auto-update), and removal of the agent.
 
-### Variables
+## Variables
 
 \- `beszel_agent_ssh_port` (integer): SSH port used by the agent (default in \`defaults/main.yml\`).
 \- `beszel_agent_ssh_key` (string, **vaulted**): Public key for agent authentication, loaded from  `inventory/group_vars/beszel_hosts/vault.yml`.
 \- `beszel_agent_autoupdate` (boolean): If \`true\`, enables agent’s auto-update feature.
 
-{% hint style="info" %}
-Don't forget to create your vault file with the `beszel_agent_ssh_key`
-{% endhint %}
+> **Note:** Create your vault file for `beszel_agent_ssh_key` using:
+> 
+> ```bash
+> ansible-vault create inventory/group_vars/beszel_hosts/vault.yml
+> ```
 
 <details>
 
@@ -46,9 +49,9 @@ ansible-playbook -i inventory/hosts.yml playbooks/bezsel-agent.yml --ask-vault-p
 
 This will:
 
-1. Gather service facts.
-2. Download `install-agent.sh`.
-3. Install the agent (auto-update if enabled).
+- Gather service facts.
+- Download `install-agent.sh`.
+- Install the agent (auto-update if enabled).
 
 #### Uninstallation
 
@@ -58,9 +61,9 @@ ansible-playbook -i inventory/hosts.yml playbooks/bezsel-agent.yml --tags uninst
 
 This will:
 
-1. Gather service facts.
-2. Download `install-agent.sh`.
-3. Run the uninstall command (/tmp/install-agent.sh -u).
+- Gather service facts.
+- Download `install-agent.sh`.
+- Run the uninstall command (`/tmp/install-agent.sh -u`).
 
 #### Related files
 
