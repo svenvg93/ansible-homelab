@@ -2,6 +2,17 @@
 
 All playbooks are located under the `playbooks/` directory:
 
+- [Docker](docker-playbook.md)
+- [Monitoring](monitoring-playbook.md)
+- [VPN (Tailscale)](tailscale-playbook.md)
+- [Site](site-playbook.md)
+- [Beszel Agent](bezsel-agent-playbook.md)
+- [Bootstrap](bootstrap-playbook.md)
+- [cAdvisor Deploy](cadvisor-deploy-playbook.md)
+- [Maintenance](maintenance-playbook.md)
+- [Node Exporter](node-exporter-playbook.md)
+- [Ookla Speedtest](ookla-speedtest-playbook.md)
+
 ```
 playbooks/
 ├── docker.yml
