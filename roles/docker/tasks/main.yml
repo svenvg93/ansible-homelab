@@ -54,7 +54,6 @@
     state: present
     update_cache: true
   when: docker_installed.rc != 0
-  notify: Restart docker
 
 - name: Enable and start Docker
   ansible.builtin.systemd:
@@ -67,3 +66,5 @@
     name: "{{ ansible_user }}"
     groups: docker
     append: true
+  notify: Restart docker
+
