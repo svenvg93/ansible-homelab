@@ -1,6 +1,5 @@
 - name: Install Speedtest CLI
   hosts: all
   become: true
-
   roles:
     - speedtest
