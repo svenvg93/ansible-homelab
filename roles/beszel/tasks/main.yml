@@ -23,6 +23,10 @@
   ignore_errors: false
   changed_when: false
 
+# The beszel ssh key should be stored in an encrypted vault:
+# Create group_vars/beszel_hosts/vault.yml with:
+# beszel_agent_ssh_key: 'ssh-ed25519 lalalal'
+
 - name: Run the install-agent.sh script without auto-update
   ansible.builtin.shell: |
     set -o pipefail && yes N | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"

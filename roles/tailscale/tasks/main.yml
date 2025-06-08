@@ -40,6 +40,10 @@
   failed_when: false
   when: tailscale_installed.stat.exists
 
+# The Tailscale auth key should be stored in an encrypted vault:
+# Create group_vars/tailscale_hosts/vault.yml with:
+# tailscale_auth_key: "tskey-YOUR_KEY_HERE"
+
 - name: Authenticate with Tailscale if logged out and auth key is provided
   ansible.builtin.command: >
     tailscale up --ssh --authkey={{ tailscale_auth_key }}
