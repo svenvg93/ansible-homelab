@@ -1,0 +1,7 @@
+- name: Install and configure Beszel agent
+  hosts: beszel_hosts
+  become: true
+  vars_files:
+    - group_vars/beszel_hosts/vault.yml
+  roles:
+    - role: beszel

@@ -1,0 +1,6 @@
+# Load sensitive variables (e.g., beszel_agent_ssh_key) from an encrypted vault
+# See group_vars/beszel_hosts/vault.yml (encrypted with ansible-vault)
+beszel_agent: true
+beszel_agent_autoupdate: true
+beszel_agent_ssh_port: 45876
+
