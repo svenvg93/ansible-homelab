@@ -11,9 +11,7 @@ description: Install or uninstall the Beszel agent on hosts in the `beszel_hosts
 ### Variables
 
 \- `beszel_agent_ssh_port` (integer): SSH port used by the agent (default in \`defaults/main.yml\`).
-
-\- `beszel_agent_ssh_key` (string, **vaulted**): Public key for agent authentication, loaded from  `inventorygroup_vars/beszel_hosts/vault.yml`.
-
+\- `beszel_agent_ssh_key` (string, **vaulted**): Public key for agent authentication, loaded from  `inventory/group_vars/beszel_hosts/vault.yml`.
 \- `beszel_agent_autoupdate` (boolean): If \`true\`, enables agent’s auto-update feature.
 
 {% hint style="info" %}
@@ -70,4 +68,3 @@ This will:
 * Vault: `inventory/group_vars/beszel_hosts/vault.yml`
 * Uninstall Tasks: `roles/bezsel/tasks/uninstall.yml`
 * Playbook: `playbooks/bezsel-agent.yml`
-
