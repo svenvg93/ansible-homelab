@@ -39,4 +39,4 @@ This repository automates the configuration and management of a personal homelab
     ansible-playbook -i inventory/hosts.yml playbooks/site.yml
     ```
 
-For more details, see [Requirements](requirements.md) and [Setup & Configuration](broken-reference).
+For more details, see [Requirements](setup-and-configuration/requirements.md) and [Setup & Configuration](broken-reference).
