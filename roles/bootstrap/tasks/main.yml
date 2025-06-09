@@ -52,4 +52,3 @@
     line: 'PermitRootLogin no'
     backrefs: true
   notify: Restart SSH
-

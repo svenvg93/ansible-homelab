@@ -1,0 +1,7 @@
+- name: Uninstall Node Exporter service
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - role: node_exporter
+      node_exporter_state: absent

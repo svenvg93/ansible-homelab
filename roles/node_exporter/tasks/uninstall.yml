@@ -1,35 +1,36 @@
 ---
-- name: Stop Node Exporter service
+# tasks file for node_exporter uninstall
+
+- name: Stop node_exporter service
   ansible.builtin.systemd:
-    name: node_exporter
+    name: node_exporter.service
     state: stopped
+  register: stop_node_exporter
+  failed_when: stop_node_exporter.failed and 'could not be found' not in stop_node_exporter.msg
 
-- name: Disable Node Exporter service
-  ansible.builtin.systemd:
-    name: node_exporter
-    enabled: false
-
-- name: Remove Node Exporter systemd unit file
+- name: Remove node_exporter binary and systemd unit"
   ansible.builtin.file:
-    path: /etc/systemd/system/node_exporter.service
+    path: "{{ remove_me }}"
     state: absent
+  loop:
+    - "{{ node_exporter_binary_path }}/node_exporter"
+    - "/etc/systemd/system/node_exporter.service"
+  loop_control:
+    loop_var: remove_me
 
-- name: Remove Node Exporter binary
+- name: Remove node_exporter textfile dir"
   ansible.builtin.file:
-    path: /usr/local/bin/node_exporter
+    path: "{{ node_exporter_textfile_path }}"
     state: absent
+  when: node_exporter_textfile_path is defined
 
-- name: Reload systemd daemon
-  ansible.builtin.systemd:
-    daemon_reload: true
-
-- name: Remove node_exporter user
+- name: Remove the node_exporter system user
   ansible.builtin.user:
-    name: node_exporter
+    name: "{{ node_exporter_user }}"
+    force: true
     state: absent
-    remove: true
 
-- name: Remove node_exporter group
+- name: Remove node_exporter system group
   ansible.builtin.group:
-    name: node_exporter
+    name: "{{ node_exporter_group }}"
     state: absent
