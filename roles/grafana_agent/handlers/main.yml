@@ -1,0 +1,10 @@
+---
+- name: Reload systemd
+  command: systemctl daemon-reload
+  listen: Reload systemd
+
+- name: Restart Grafana Agent
+  systemd:
+    name: grafana-agent
+    state: restarted
+  listen: Restart Grafana Agent

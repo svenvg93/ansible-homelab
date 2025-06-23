@@ -1,5 +1,4 @@
 ---
-# handlers file for node_exporter
 - name: Restart node_exporter
   listen: "restart node_exporter"
   ansible.builtin.systemd:
@@ -7,3 +6,4 @@
     name: node_exporter
     state: restarted
     enabled: true
+

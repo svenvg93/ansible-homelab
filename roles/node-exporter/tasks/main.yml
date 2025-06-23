@@ -1,4 +1,5 @@
 ---
+---
 # tasks file for node_exporter deploy
 - name: Obtain latest version from node_exporter Github repo
   when: node_exporter_version == "latest"
@@ -123,3 +124,4 @@
   delay: 5
   until: node_exporter_verify_url_status_code.status == 200
   when: node_exporter_expose_port | bool
+

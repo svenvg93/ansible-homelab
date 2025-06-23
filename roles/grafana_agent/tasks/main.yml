@@ -1,0 +1,78 @@
+- name: Ensure unzip & curl are installed
+  apt:
+    name:
+      - unzip
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Detect host architecture
+  set_fact:
+    grafana_agent_arch: |
+      {% if ansible_architecture in ['x86_64'] %}amd64{% elif ansible_architecture in ['aarch64', 'arm64'] %}arm64{% else %}amd64{% endif %}
+
+- name: Build download URL
+  set_fact:
+    grafana_agent_download_url: "{{ grafana_agent_download_base }}/agent-linux-{{ grafana_agent_arch }}.zip"
+
+- name: Create install directory
+  file:
+    path: "{{ grafana_agent_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Download Grafana Agent binary archive
+  get_url:
+    url: "{{ grafana_agent_download_url }}"
+    dest: "/tmp/grafana-agent-{{ grafana_agent_arch }}.zip"
+    mode: '0644'
+
+- name: Unzip Grafana Agent
+  unarchive:
+    src: "/tmp/grafana-agent-{{ grafana_agent_arch }}.zip"
+    dest: "{{ grafana_agent_install_dir }}"
+    creates: "{{ grafana_agent_install_dir }}/agent-linux-{{ grafana_agent_arch }}"
+
+- name: Symlink agent binary to /usr/local/bin
+  file:
+    src: "{{ grafana_agent_install_dir }}/agent-linux-{{ grafana_agent_arch }}"
+    dest: /usr/local/bin/grafana-agent
+    state: link
+    force: yes
+
+- name: Deploy agent config
+  template:
+    src: "agent-config.yaml.j2"
+    dest: "{{ grafana_agent_install_dir }}/agent-config.yaml"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Grafana Agent
+
+- name: Create systemd unit
+  copy:
+    dest: /etc/systemd/system/grafana-agent.service
+    content: |
+      [Unit]
+      Description=Grafana Agent
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/local/bin/grafana-agent --config.file={{ grafana_agent_install_dir }}/agent-config.yaml
+      Restart=on-failure
+      RestartSec=5s
+
+      [Install]
+      WantedBy=multi-user.target
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Ensure Grafana Agent is enabled and running
+  systemd:
+    name: grafana-agent
+    enabled: yes
+    state: started
