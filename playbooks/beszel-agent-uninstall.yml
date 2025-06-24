@@ -1,9 +1,0 @@
-- name: Uninstall Beszel Agent
-  hosts: beszel_hosts
-  gather_facts: false
-  become: true
-  vars_files:
-    - group_vars/beszel_hosts/vault.yml
-  roles:
-    - role: beszel
-      beszel_state: absent

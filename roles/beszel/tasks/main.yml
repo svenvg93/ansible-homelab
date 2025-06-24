@@ -1,8 +1,0 @@
-# tasks file for Beszel Agent
-- name: Deploy Bezsel Agent
-  ansible.builtin.include_tasks: deploy.yml
-  when: state|default('present') == 'present'
-
-- name: Uninstall Bezsel Agent
-  ansible.builtin.include_tasks: uninstall.yml
-  when: state|default('present') == 'absent'

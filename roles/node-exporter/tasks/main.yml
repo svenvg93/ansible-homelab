@@ -1,5 +1,4 @@
 ---
----
 # tasks file for node_exporter deploy
 - name: Obtain latest version from node_exporter Github repo
   when: node_exporter_version == "latest"
