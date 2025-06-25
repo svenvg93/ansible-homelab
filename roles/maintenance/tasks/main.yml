@@ -51,7 +51,7 @@
   when:
     - maintenance_docker_prune | default(true)
     - ansible_facts.packages is defined
-    - 'docker' in ansible_facts.packages
+    - docker in ansible_facts.packages
 
 - name: Vacuum old journal logs older than {{ maintenance_journal_vacuum_days }} days
   ansible.builtin.command: journalctl --vacuum-time={{ maintenance_journal_vacuum_days }}d
@@ -75,6 +75,7 @@
   when:
     - maintenance_log_cleanup | default(true)
     - old_logs.matched > 0
+  no_log: true
 
 # (Optional) Add more tasks for log cleanup, service checks, etc.
 
