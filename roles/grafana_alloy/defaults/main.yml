@@ -9,4 +9,4 @@ grafana_alloy_service_name: "alloy"
 grafana_alloy_download_url: "https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64"
 grafana_alloy_user: alloy
 grafana_alloy_group: alloy
-grafana_alloy_extra_opts: "" 
+grafana_alloy_extra_opts: ""

@@ -13,4 +13,4 @@ provisioner:
 verifier:
   name: ansible
   lint:
-    name: ansible-lint 
+    name: ansible-lint

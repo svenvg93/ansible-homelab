@@ -71,4 +71,3 @@
     append: true
   loop: "{{ docker_group_users }}"
   notify: Restart docker
-

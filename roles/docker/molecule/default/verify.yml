@@ -10,4 +10,4 @@
     - name: Assert Docker is installed
       assert:
         that:
-          - docker_version.rc == 0 
+          - docker_version.rc == 0
