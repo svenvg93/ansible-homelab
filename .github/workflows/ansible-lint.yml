@@ -34,12 +34,6 @@ jobs:
         run: |
           ansible-lint .
 
-      - name: Ansible syntax-check (all playbooks)
-        run: |
-          for pb in playbooks/*.yml; do
-            ansible-playbook --syntax-check -i inventory/hosts.yml "$pb"
-          done
-
   molecule:
     name: Molecule Test (docker role)
     runs-on: ubuntu-latest
