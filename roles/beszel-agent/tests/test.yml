@@ -1,7 +1,0 @@
----
-# Test playbook for beszel-agent role
-# SPDX-License-Identifier: MIT-0
-- hosts: localhost
-  remote_user: root
-  roles:
-    - roles/bezsel-agent
