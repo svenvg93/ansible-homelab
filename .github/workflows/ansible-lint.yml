@@ -1,7 +1,6 @@
 ---
 # yamllint disable rule:truthy
-name: Ansible Lint, Syntax Check & Molecule
-
+name: Ansible Lint
 on:
   push:
     branches: ["master"]
