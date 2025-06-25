@@ -1,2 +1,3 @@
+---
 tailscale_enable_ssh: true
 tailscale_install_url: "https://tailscale.com/install.sh" 

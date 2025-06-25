@@ -1,3 +1,4 @@
+---
 # Install and configure Docker on target hosts.
 - name: Deploy Docker
   hosts: all

@@ -1,3 +1,4 @@
+---
 # Deploy the Beszel Agent to all hosts. Requires beszel_agent_ssh_key in group_vars/all/vault.yml.
 - name: Deploy Beszel Agent
   hosts: all

@@ -1,3 +1,4 @@
+---
 # Bootstrap a new node with essential roles and configuration.
 - name: Bootstrap Node
   hosts: all

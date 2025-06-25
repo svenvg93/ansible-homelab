@@ -1,3 +1,4 @@
+---
 # Enroll hosts into Tailscale network.
 - name: Enroll hosts into Tailscale
   hosts: all

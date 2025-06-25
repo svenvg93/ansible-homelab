@@ -1,4 +1,5 @@
 ---
+# Main tasks for beszel-agent role
 # tasks file for roles/beszel-agent
 - name: Populate service facts
   ansible.builtin.service_facts:

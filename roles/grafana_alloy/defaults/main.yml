@@ -1,3 +1,4 @@
+---
 grafana_alloy_version: "latest"
 grafana_alloy_loki_url: "http://loki.example.com:3100/loki/api/v1/push"
 grafana_alloy_loki_tenant_id: ""

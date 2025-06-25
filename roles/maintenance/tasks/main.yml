@@ -3,7 +3,7 @@
 
 - name: Update apt cache
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
   when: maintenance_update_packages | default(true)
 
 - name: Upgrade all packages
@@ -13,12 +13,12 @@
 
 - name: Autoremove unused packages
   ansible.builtin.apt:
-    autoremove: yes
+    autoremove: true
   when: maintenance_cleanup | default(true)
 
 - name: Clean apt cache
   ansible.builtin.apt:
-    autoclean: yes
+    autoclean: true
   when: maintenance_cleanup | default(true)
 
 - name: Check disk usage
@@ -39,7 +39,7 @@
 
 - name: Clean APT cache (extra)
   ansible.builtin.apt:
-    autoclean: yes
+    autoclean: true
   when: maintenance_cleanup | default(true)
 
 - name: Prune Docker unused images, containers, and volumes

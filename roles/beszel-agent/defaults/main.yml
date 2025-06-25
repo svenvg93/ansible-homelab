@@ -1,5 +1,5 @@
-# --= CUSTOM ADDONS =--
-# Beszel monitoring ssh key for installing beszel agents on all nodes
+---
+# Defaults for beszel-agent role
 beszel_agent: true
 beszel_agent_autoupdate: false
 beszel_agent_ssh_port: 45876

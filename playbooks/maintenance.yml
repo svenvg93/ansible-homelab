@@ -1,3 +1,4 @@
+---
 # Perform routine system maintenance.
 - name: Perform system maintenance
   hosts: all
