@@ -1,0 +1,12 @@
+[Unit]
+Description=Grafana Alloy
+After=network.target
+
+[Service]
+User={{ grafana_alloy_user }}
+Group={{ grafana_alloy_group }}
+ExecStart=/usr/local/bin/alloy --config.file={{ grafana_alloy_config_path }} {{ grafana_alloy_extra_opts }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target 

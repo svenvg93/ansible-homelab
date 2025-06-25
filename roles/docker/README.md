@@ -1,38 +1,45 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Docker Role
+-----------
+This role installs and configures Docker on supported Linux systems. It ensures Docker is installed, running, and that specified users are added to the Docker group.
 
 Requirements
 ------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Supported OS: Debian/Ubuntu
+- Ansible 2.9+
 
 Role Variables
 --------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- `docker_group_users`: List of users to add to the Docker group. Default: `["{{ ansible_user }}"]`
+- `docker_version`: Version of Docker to install. Default: `latest`
+- `docker_apt_repo`: Docker APT repository URL. Default: `https://download.docker.com/linux/{{ ansible_distribution | lower }}`
+- `docker_apt_gpg_key`: Docker GPG key URL. Default: `https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg`
 
 Dependencies
 ------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+        - role: docker
+          vars:
+            docker_group_users:
+              - alice
+              - bob
+            docker_version: latest
 
 License
 -------
-
-BSD
+MIT-0
 
 Author Information
 ------------------
+Your Name <your.email@example.com>
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Security Note
+-------------
+Adding users to the Docker group grants root-level access to the system. Only add trusted users.

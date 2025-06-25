@@ -1,5 +1,7 @@
+# Perform routine system maintenance.
 - name: Perform system maintenance
   hosts: all
   become: true
+  gather_facts: true
   roles:
     - maintenance

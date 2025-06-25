@@ -1,0 +1,9 @@
+---
+# Defaults for maintenance role
+maintenance_update_packages: true
+maintenance_cleanup: true
+maintenance_docker_prune: true
+maintenance_journal_vacuum: true
+maintenance_journal_vacuum_days: 7
+maintenance_log_cleanup: true
+maintenance_log_age_days: 30 

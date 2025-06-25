@@ -1,0 +1,68 @@
+---
+- name: Determine Alloy download URL for architecture
+  set_fact:
+    grafana_alloy_download_url_arch: >-
+      {% if grafana_alloy_version == 'latest' %}
+        {% if ansible_architecture in ['x86_64', 'amd64'] %}https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64
+        {% elif ansible_architecture in ['aarch64', 'arm64'] %}https://github.com/grafana/alloy/releases/latest/download/alloy-linux-arm64
+        {% elif ansible_architecture in ['armv7l', 'armhf'] %}https://github.com/grafana/alloy/releases/latest/download/alloy-linux-armv7
+        {% else %}https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64
+        {% endif %}
+      {% else %}
+        {% if ansible_architecture in ['x86_64', 'amd64'] %}https://github.com/grafana/alloy/releases/download/v{{ grafana_alloy_version }}/alloy-linux-amd64
+        {% elif ansible_architecture in ['aarch64', 'arm64'] %}https://github.com/grafana/alloy/releases/download/v{{ grafana_alloy_version }}/alloy-linux-arm64
+        {% elif ansible_architecture in ['armv7l', 'armhf'] %}https://github.com/grafana/alloy/releases/download/v{{ grafana_alloy_version }}/alloy-linux-armv7
+        {% else %}https://github.com/grafana/alloy/releases/download/v{{ grafana_alloy_version }}/alloy-linux-amd64
+        {% endif %}
+      {% endif %}
+
+- name: Ensure alloy user exists
+  ansible.builtin.user:
+    name: "{{ grafana_alloy_user }}"
+    system: yes
+    shell: /usr/sbin/nologin
+    create_home: no
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ grafana_alloy_config_path | dirname }}"
+    state: directory
+    owner: "{{ grafana_alloy_user }}"
+    group: "{{ grafana_alloy_group }}"
+    mode: '0755'
+
+- name: Download Grafana Alloy binary
+  ansible.builtin.get_url:
+    url: "{{ grafana_alloy_download_url_arch }}"
+    dest: /usr/local/bin/alloy
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Deploy Alloy config
+  ansible.builtin.template:
+    src: alloy-config.yaml.j2
+    dest: "{{ grafana_alloy_config_path }}"
+    owner: alloy
+    group: alloy
+    mode: '0644'
+  notify: Restart alloy
+
+- name: Create systemd service for Alloy
+  ansible.builtin.template:
+    src: alloy.service.j2
+    dest: /etc/systemd/system/{{ grafana_alloy_service_name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart alloy
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Ensure Alloy is enabled and started
+  ansible.builtin.systemd:
+    name: "{{ grafana_alloy_service_name }}"
+    enabled: yes
+    state: started 

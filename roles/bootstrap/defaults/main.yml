@@ -1,2 +1,6 @@
 bootstrap_timezone: Europe/Amsterdam
 bootstrap_locale: en_US.UTF-8
+bootstrap_essential_packages:
+  - unattended-upgrades
+  - tcpdump
+bootstrap_unattended_mail: root

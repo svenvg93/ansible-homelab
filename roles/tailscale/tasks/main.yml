@@ -16,7 +16,7 @@
 
 - name: Download Tailscale install script
   ansible.builtin.get_url:
-    url: https://tailscale.com/install.sh
+    url: "{{ tailscale_install_url }}"
     dest: /tmp/tailscale-install.sh
     mode: '0755'
   when: not tailscale_installed.stat.exists
@@ -41,7 +41,6 @@
   when: tailscale_installed.stat.exists
 
 # The Tailscale auth key should be stored in an encrypted vault:
-# Create group_vars/tailscale_hosts/vault.yml with:
 # tailscale_auth_key: "tskey-YOUR_KEY_HERE"
 
 - name: Authenticate with Tailscale if logged out and auth key is provided
@@ -55,7 +54,7 @@
 
 - name: Enable Tailscale SSH on the host
   ansible.builtin.command: tailscale up --ssh
-  when: tailscale_auth_key is defined and tailscale_installed.stat.exists
+  when: tailscale_enable_ssh and tailscale_auth_key is defined and tailscale_installed.stat.exists
   changed_when: true
   tags:
     - tailscale_ssh

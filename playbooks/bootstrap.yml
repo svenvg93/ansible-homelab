@@ -1,9 +1,11 @@
+# Bootstrap a new node with essential roles and configuration.
 - name: Bootstrap Node
   hosts: all
   become: true
+  gather_facts: true
   roles:
     - bootstrap
     - tailscale
-    - beszel
+    - beszel-agent
     - docker
     - maintenance

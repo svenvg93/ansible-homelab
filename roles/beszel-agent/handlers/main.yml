@@ -1,3 +1,8 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for roles/bezsel-agent
+
+- name: Restart beszel-agent
+  ansible.builtin.systemd:
+    name: beszel-agent
+    state: restarted

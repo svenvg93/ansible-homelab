@@ -1,5 +1,5 @@
 ---
-# tasks file for roles/bezsel-agent
+# tasks file for roles/beszel-agent
 - name: Populate service facts
   ansible.builtin.service_facts:
 
@@ -18,14 +18,14 @@
   get_url:
     url: https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh
     dest: /tmp/install-agent.sh
-    mode: '0755' # Set executable permissions
+    mode: '0755'
 
 - name: Run the install-agent.sh script with auto-update
   shell: yes | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
   when: beszel_agent_autoupdate | bool
-  ignore_errors: false
+  notify: Restart beszel-agent
 
 - name: Run the install-agent.sh script without auto-update
   shell: yes N | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
   when: not beszel_agent_autoupdate | bool
-  ignore_errors: false
+  notify: Restart beszel-agent

@@ -1,0 +1,10 @@
+---
+- name: Reboot system if required
+  ansible.builtin.reboot:
+    reboot_timeout: 300
+    test_command: uptime
+
+- name: Restart beszel-agent
+  ansible.builtin.systemd:
+    name: beszel-agent
+    state: restarted 

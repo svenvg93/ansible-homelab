@@ -3,3 +3,4 @@
 beszel_agent: true
 beszel_agent_autoupdate: false
 beszel_agent_ssh_port: 45876
+# beszel_agent_ssh_key: Set this in group_vars/all/vault.yml

@@ -1,6 +1,7 @@
+# Install and configure Docker on target hosts.
 - name: Deploy Docker
   hosts: all
-  gather_facts: false
+  gather_facts: true
   become: true
-  roles: 
+  roles:
     - docker

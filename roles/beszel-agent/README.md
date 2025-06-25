@@ -1,38 +1,38 @@
-Role Name
-=========
+# Beszel Agent Role
 
-A brief description of the role goes here.
+This role installs and manages the Beszel agent for monitoring and management. It is intended for use on all nodes where Beszel should be deployed.
 
-Requirements
-------------
+## Features
+- Installs or updates the Beszel agent using the official install script
+- Configures the agent to use a custom SSH port and key
+- Optionally enables auto-update
+- Skips installation if the agent is already running (unless forced)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Requirements
+- The variable `beszel_agent_ssh_key` **must** be set in `group_vars/all/vault.yml` or another secure location. This is the SSH key used by the agent.
+- Ansible 2.10+
 
-Role Variables
---------------
+## Role Variables
+| Variable                  | Default    | Description                                      |
+|---------------------------|------------|--------------------------------------------------|
+| `beszel_agent`            | true       | Whether to install the agent                     |
+| `beszel_agent_autoupdate` | false      | Enable auto-update for the agent                 |
+| `beszel_agent_ssh_port`   | 45876      | SSH port for the agent to use                    |
+| `beszel_agent_ssh_key`    | (required) | SSH key for agent, set in Vault or group_vars    |
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Example Playbook
+```yaml
+- hosts: all
+  become: true
+  roles:
+    - role: beszel-agent
+      vars:
+        beszel_agent_autoupdate: true
+        beszel_agent_ssh_port: 22222
+```
 
-Dependencies
-------------
+## License
+MIT-0
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Author
+Your Name <your.email@example.com>
