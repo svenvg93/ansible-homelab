@@ -1,0 +1,31 @@
+---
+# tasks file for roles/bezsel-agent
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Check if 'beszel-agent' systemd service is running
+  ansible.builtin.systemd:
+    name: beszel-agent
+  register: beszel_service
+  changed_when: false
+  failed_when: false
+
+- name: Skip Beszel Agent setup if already running
+  ansible.builtin.meta: end_host
+  when: beszel_service.status.ActiveState == "active"
+
+- name: Download the install-agent.sh script
+  get_url:
+    url: https://raw.githubusercontent.com/henrygd/beszel/main/supplemental/scripts/install-agent.sh
+    dest: /tmp/install-agent.sh
+    mode: '0755' # Set executable permissions
+
+- name: Run the install-agent.sh script with auto-update
+  shell: yes | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  when: beszel_agent_autoupdate | bool
+  ignore_errors: false
+
+- name: Run the install-agent.sh script without auto-update
+  shell: yes N | /tmp/install-agent.sh -p {{ beszel_agent_ssh_port }} -k "{{ beszel_agent_ssh_key }}"
+  when: not beszel_agent_autoupdate | bool
+  ignore_errors: false

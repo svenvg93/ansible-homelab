@@ -1,7 +1,0 @@
-- name: Uninstall Docker
-  hosts: docker_hosts
-  gather_facts: false
-  become: true
-  roles:
-    - role: docker
-      docker_state: absent

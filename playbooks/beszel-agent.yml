@@ -1,0 +1,7 @@
+- name: Deploy Beszel Agent
+  hosts: all
+  vars_files:
+    - ../group_vars/all/vault.yml
+  become: true
+  roles:
+    - beszel-agent
