@@ -21,15 +21,6 @@
     autoclean: true
   when: maintenance_cleanup | default(true)
 
-- name: Check disk usage
-  ansible.builtin.command: df -h
-  register: disk_usage
-  changed_when: false
-
-- name: Report disk usage
-  ansible.builtin.debug:
-    var: disk_usage.stdout_lines
-
 - name: Update beszel agent
   ansible.builtin.command: /opt/beszel-agent/beszel-agent update
   register: beszel_agent_update
