@@ -3,6 +3,8 @@
 - name: Enroll hosts into Tailscale
   hosts: all
   become: true
+  vars_files:
+    - ../group_vars/all/vault.yml
   gather_facts: true
   roles:
     - tailscale
